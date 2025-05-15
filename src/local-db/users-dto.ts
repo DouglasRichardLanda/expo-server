@@ -39,4 +39,5 @@ const HUMAN_ENTITY1: HUMAN_ENTITY_INTERFACE = Object.freeze({
   fathernumber: 0
 })
 
-export {HUMAN_ENTITY_INTERFACE ,HUMAN_ENTITY1}
+export type {HUMAN_ENTITY_INTERFACE}
+export {HUMAN_ENTITY1}
