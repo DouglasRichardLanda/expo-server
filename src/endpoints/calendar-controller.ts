@@ -6,11 +6,11 @@ import type {Request as REQ, Response as RES} from "express";
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
 import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
 import comperer from "../helpers/matrix-comperer.ts"
+import matrix_distributor from "../helpers/matrix-distributor.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
-    const {current, id} = req.query;
-
+    const {current, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
 
     const today = new Date(current as string)
     // TODO:: -> Fetching DB Info incl. Numbers
@@ -18,23 +18,21 @@ class CalendarController {
     // Format:: --> 2025-05-02T00:00:00.000Z []
     const next14Days = Array.from({length: 14}, (_, i) => {
       const nextDay = new Date(today);
-      nextDay.setDate(today.getDate() + i); // remove +1 to include today
+      nextDay.setDate(today.getDate() + i);
       return nextDay;
     });
-
 
     let fullDayResults: string[] = []
     let firstHalfResults: string[] = []
     let secondHalfResults: string[] = []
 
-    console.log(next14Days[1] as Date)
-    console.log(date_number(next14Days[1] as Date))
+    next14Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults))
 
-    next14Days.forEach((unit: Date) => {
-      fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(unit)))
-      firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(unit.getDate())))
-      secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(unit)))
-    })
+    // next14Days.forEach((unit: Date) => {
+    //   fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(unit)))
+    //   firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(unit.getDate())))
+    //   secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(unit)))
+    // })
 
 
     res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})

@@ -7,3 +7,7 @@ export default function comperer(x: number[][], n: number): string {
     return "red" // BAD DAY
   }
 }
+/*
+* This function compares the number we give with what we have in matrix
+*
+* */
