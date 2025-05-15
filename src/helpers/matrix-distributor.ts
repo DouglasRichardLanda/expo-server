@@ -9,3 +9,9 @@ export default function matrix_distributor(unit: Date, full: string[], first: st
   first.push(comperer(COMPARISON_MATRIX.get(user.namenumber) as number[][], digit_normaliser(unit.getDate())))
   second.push(comperer(COMPARISON_MATRIX.get(user.birthdaynumber) as number[][], date_number(unit)))
 }
+
+/*
+*
+* This function takes a date, then it calculates with matrix the results for every provided day
+*
+* */

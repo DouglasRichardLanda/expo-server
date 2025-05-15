@@ -10,6 +10,6 @@ export default function days_advanced_counter(today: Date, amount: number = 1) {
 
 /*
 *
-* This function calculates in a valid format some certain amount of dates in advanced
+* This function calculates in a valid format some certain number of dates in advanced
 *
 * */

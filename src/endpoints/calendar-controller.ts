@@ -1,7 +1,5 @@
-import express from "express";
 import digit_normaliser from "../helpers/digit-normaliser";
 import date_number from "../helpers/date-number.ts";
-import name_number from "../helpers/name-number.ts";
 import type {Request as REQ, Response as RES} from "express";
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
 import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";

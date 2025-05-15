@@ -19,3 +19,9 @@ export default function digit_normaliser(argument: number, acc: number = 0) {
   }
   return digit_normaliser(sum, 0);
 }
+
+/*
+*
+* This function takes a digit and sums elements of it into a single digit e.g. 12 => 1 + 2 = 3 or 25 => 2 + 5 = 7, etc.
+*
+* */

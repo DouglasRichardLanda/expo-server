@@ -19,6 +19,14 @@ export default function date_number (date: Date) {
   return local
 }
 
+/*
+*
+* This function calculates the number of the day. It doesn't matter if 2025.01.32 or just 12
+*
+* */
+
+
+// TESTS
 // console.log(date_number(new Date("2025-05-15T00:00:00.000Z")))
 // console.log(date_number(new Date("2025-05-16T00:00:00.000Z")))
 // console.log(date_number(new Date("2025-05-17T00:00:00.000Z")))
