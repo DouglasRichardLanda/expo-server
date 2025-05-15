@@ -33,10 +33,6 @@ class CalendarController {
 
     console.log(next14Days)
 
-    // we calculate 3 things: full day, first half and second half
-    // full day: full sum of the day e.g. 19.02.2025 compared with Lucky number
-    // first half: name number compared with only current day (calculated)
-    // seconds hald: ull sum of the day e.g. 19.02.2025 compared with Birthday number
 
     await new Promise(resolve => setTimeout(resolve, 2000))
 
@@ -81,11 +77,11 @@ class CalendarController {
     let secondHalfResults: string[] = []
     next56Days.forEach((unit: Date) => {
       if (!unit) return
-      console.log(HUMAN_ENTITY.luckynumber, date_number(unit))
+      console.log(HUMAN_ENTITY1.luckynumber, date_number(unit))
 
-      fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.luckynumber) as number[][], date_number(unit)))
-      firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.namenumber) as number[][], digit_normaliser(unit.getDate())))
-      secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.birthdaynumber) as number[][], date_number(unit)))
+      fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(unit)))
+      firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(unit.getDate())))
+      secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(unit)))
     })
 
     res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})
@@ -96,9 +92,9 @@ class CalendarController {
     console.log("INVOKED")
     const specificdate = new Date(date as string)
 
-    let fullDayResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.luckynumber) as number[][], date_number(specificdate))
-    let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.namenumber) as number[][], digit_normaliser(specificdate.getDate()))
-    let secondHalfResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.birthdaynumber) as number[][], date_number(specificdate))
+    let fullDayResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(specificdate))
+    let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(specificdate.getDate()))
+    let secondHalfResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(specificdate))
 
     res.status(200).json({firstHalfResult, secondHalfResult, fullDayResult})
   }
