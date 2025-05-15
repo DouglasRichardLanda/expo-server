@@ -26,14 +26,7 @@ class CalendarController {
     let firstHalfResults: string[] = []
     let secondHalfResults: string[] = []
 
-    next14Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults))
-
-    // next14Days.forEach((unit: Date) => {
-    //   fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(unit)))
-    //   firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(unit.getDate())))
-    //   secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(unit)))
-    // })
-
+    next14Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1))
 
     res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})
   }
