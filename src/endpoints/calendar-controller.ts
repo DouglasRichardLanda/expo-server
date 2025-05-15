@@ -7,20 +7,15 @@ import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
 import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
 import comperer from "../helpers/matrix-comperer.ts"
 import matrix_distributor from "../helpers/matrix-distributor.ts";
+import days_advanced_counter from "../helpers/days-advanced-counter.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
     const {current, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
 
     const today = new Date(current as string)
-    // TODO:: -> Fetching DB Info incl. Numbers
 
-    // Format:: --> 2025-05-02T00:00:00.000Z []
-    const next14Days = Array.from({length: 14}, (_, i) => {
-      const nextDay = new Date(today);
-      nextDay.setDate(today.getDate() + i);
-      return nextDay;
-    });
+    const next14Days = days_advanced_counter(today, 14)
 
     let fullDayResults: string[] = []
     let firstHalfResults: string[] = []
