@@ -5,16 +5,7 @@ import name_number from "../helpers/name-number.ts";
 import type {Request as REQ, Response as RES} from "express";
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
 import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
-
-function comperer(x: number[][], n: number): string {
-  if (x[0] && x[0].includes(n)) {
-    return "green" // GOOD DAY
-  } else if (x[1] && x[1].includes(n)) {
-    return "orange" // ORDINARY DAY
-  } else {
-    return "red" // BAD DAY
-  }
-}
+import comperer from "../helpers/matrix-comperer.ts"
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
@@ -31,10 +22,6 @@ class CalendarController {
       return nextDay;
     });
 
-    console.log(next14Days)
-
-
-    await new Promise(resolve => setTimeout(resolve, 2000))
 
     let fullDayResults: string[] = []
     let firstHalfResults: string[] = []
