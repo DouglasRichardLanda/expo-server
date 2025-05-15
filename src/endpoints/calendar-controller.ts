@@ -4,46 +4,7 @@ import date_number from "../helpers/date-number.ts";
 import name_number from "../helpers/name-number.ts";
 import type {Request as REQ, Response as RES} from "express";
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
-
-interface HUMAN_ENTITY_INTERFACE {
-  id: string,
-  firstname: string,
-  secondname: string,
-  fathername: string,
-  email: string,
-  password: string,
-  birthday: string,
-  subscription: string,
-  model: "PREMIUM" | "STANDARD",
-  language: "ru" | "en" | "de",
-  notes: {
-    date: string,
-    content: string,
-    matches: boolean
-  }[],
-  luckynumber: number,
-  birthdaynumber: number,
-  namenumber: number,
-  fathernumber: number
-}
-
-const HUMAN_ENTITY: HUMAN_ENTITY_INTERFACE = Object.freeze({
-  id: "1",
-  firstname: "Антон",
-  secondname: "Кравчук",
-  fathername: "Вадим",
-  email: "custom@gmail.com",
-  password: "hashed password",
-  birthday: "1985-11-11",
-  subscription: "2025-01-06",
-  model: "PREMIUM",
-  language: "ru",
-  notes: [],
-  luckynumber: 3,
-  birthdaynumber: 9,
-  namenumber: 3,
-  fathernumber: 0
-})
+import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
 
 function comperer(x: number[][], n: number): string {
   if (x[0] && x[0].includes(n)) {
@@ -87,9 +48,9 @@ class CalendarController {
     console.log(date_number(next14Days[1] as Date))
 
     next14Days.forEach((unit: Date) => {
-      fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.luckynumber) as number[][], date_number(unit)))
-      firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.namenumber) as number[][], digit_normaliser(unit.getDate())))
-      secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY.birthdaynumber) as number[][], date_number(unit)))
+      fullDayResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(unit)))
+      firstHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(unit.getDate())))
+      secondHalfResults.push(comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.birthdaynumber) as number[][], date_number(unit)))
     })
 
 
