@@ -31,7 +31,7 @@ class CalendarController {
   }
 
   async any_date_report(req: REQ, res: RES) {
-    const {date, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {id, date} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
     const specificdate = new Date(date as string)
     let fullDayResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.luckynumber) as number[][], date_number(specificdate))
     let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(HUMAN_ENTITY1.namenumber) as number[][], digit_normaliser(specificdate.getDate()))
