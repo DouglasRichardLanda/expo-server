@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import CalendarRouter from "./endpoints/calendar-router.ts";
+import RegistrationRouter from "./endpoints/registration-router.ts";
 
 dotenv.config()
 
@@ -11,6 +12,7 @@ app.use(cors())
 
 app.use(express.json())
 app.use("/api", CalendarRouter)
+app.use("/register", RegistrationRouter)
 
 app.listen(5000, () => {
   console.log("SERVER ON PORT:: --> :: ", 5000)
