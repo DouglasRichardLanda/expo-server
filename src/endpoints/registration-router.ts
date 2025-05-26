@@ -5,5 +5,6 @@ import RegistrationController from "./registration-controller.ts";
 const RegistrationRouter: express.Router = express.Router()
 
 RegistrationRouter.post('/first', RegistrationController.register_step1)
+RegistrationRouter.post('/second', RegistrationController.register_step2)
 
 export default RegistrationRouter;

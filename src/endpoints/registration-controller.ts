@@ -20,8 +20,9 @@ class RegistrationController {
       const {usercode} = req.body;
 
       console.log("USERCODE: ", usercode)
+      // here we create a record in DB and then we send back ID of the record
 
-      res.status(202).json({success: true})
+      res.status(202).json({success: true, id: 123})
     } catch (e) {
       res.status(500).json({success: false})
     }
