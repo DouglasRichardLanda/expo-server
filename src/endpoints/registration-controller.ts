@@ -1,14 +1,14 @@
 import type {Request as REQ, Response as RES} from "express";
 
-const codes: {code: string, createdAt: number, name: string, email: string}[] = [];
+const codes: {code: string, createdAt: number, email: string}[] = [];
 
 class RegistrationController {
   async register_step1 (req: REQ, res: RES) {
     try {
-      const {name, email} = req.body;
+      const {email} = req.body;
 
       const code = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-      codes.push({code: code, createdAt: Date.now(), name: name, email: email})
+      codes.push({code: code, createdAt: Date.now(), email: email})
 
       res.status(202).json({success: true})
     } catch (e) {
