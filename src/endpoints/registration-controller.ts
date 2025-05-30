@@ -9,6 +9,7 @@ class RegistrationController {
 
       const code = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
       codes.push({code: code, createdAt: Date.now(), email: email})
+      console.log("SAVED :: ", {code: code, createdAt: Date.now(), email: email});
 
       res.status(202).json({success: true})
     } catch (e) {
@@ -19,8 +20,16 @@ class RegistrationController {
     try {
       const {usercode} = req.body;
 
-      console.log("USERCODE: ", usercode)
-      // here we create a record in DB and then we send back ID of the record
+      const record = codes.find((element) => {
+        return element.code === usercode
+      })
+      if (!record) {
+        res.status(500).json({success: false})
+        return;
+      } else {
+        // TODO:: save the user in DB
+        // TODO:: clean the queue
+      }
 
       res.status(202).json({success: true, id: 123})
     } catch (e) {
