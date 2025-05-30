@@ -1,7 +1,7 @@
 import type {Request as REQ, Response as RES} from "express";
 import pool from "../bd-connect.ts";
 
-const codes: {code: string, createdAt: number, email: string}[] = [];
+let codes: {code: string, createdAt: number, email: string}[] = [];
 
 class RegistrationController {
   async register_step1 (req: REQ, res: RES) {
@@ -10,8 +10,8 @@ class RegistrationController {
 
       const code = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
       codes.push({code: code, createdAt: Date.now(), email: email})
-      console.log("SAVED :: ", {code: code, createdAt: Date.now(), email: email});
-
+      // console.log("SAVED :: ", {code: code, createdAt: Date.now(), email: email});
+      console.log(codes)
       res.status(202).json({success: true})
     } catch (e) {
       res.status(500).json({success: false})
@@ -29,12 +29,13 @@ class RegistrationController {
         return;
       } else {
         try {
-          await pool.query(`insert `);
+          await pool.query(`insert into users (email, roll) values ('${record.email}', 'user')`);
+          codes = codes.filter((element) => {
+            return element.code !== record.code;
+          })
         } catch (e) {
-
+          console.error("FAILED TO WRITE INTO DB :: ", e)
         }
-        // TODO:: save the user in DB
-        // TODO:: clean the queue
       }
 
       res.status(202).json({success: true, id: 123})
