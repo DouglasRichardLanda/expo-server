@@ -1,4 +1,5 @@
 import type {Request as REQ, Response as RES} from "express";
+import pool from "../bd-connect.ts";
 
 const codes: {code: string, createdAt: number, email: string}[] = [];
 
@@ -27,6 +28,11 @@ class RegistrationController {
         res.status(500).json({success: false})
         return;
       } else {
+        try {
+          await pool.query(`insert `);
+        } catch (e) {
+
+        }
         // TODO:: save the user in DB
         // TODO:: clean the queue
       }
