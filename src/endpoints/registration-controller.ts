@@ -47,16 +47,10 @@ class RegistrationController {
     try {
       const {name, father, password, birthday, email} = req.body;
 
-      const birthdayDate = new Date(birthday).toISOString().split("T")[0];
+      const date = new Date(birthday)
 
       await pool.query(`UPDATE users SET name = ?, fathername = ?, birthday = ?, password = ? WHERE email = ?`,
-        [name, father, birthdayDate, password, email]);
-
-      console.log(email)
-      console.log(name)
-      console.log(father)
-      console.log(password)
-      console.log(birthday)
+        [name, father, date, password, email]);
 
       res.status(200).json({success: true})
     } catch (e) {
