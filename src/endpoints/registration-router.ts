@@ -6,5 +6,6 @@ const RegistrationRouter: express.Router = express.Router()
 
 RegistrationRouter.post('/first', RegistrationController.register_step1)
 RegistrationRouter.post('/second', RegistrationController.register_step2)
+RegistrationRouter.post('/third', RegistrationController.register_step3)
 
 export default RegistrationRouter;

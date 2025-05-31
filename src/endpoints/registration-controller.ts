@@ -38,8 +38,29 @@ class RegistrationController {
         }
       }
 
-      res.status(202).json({success: true, id: 123})
+      res.status(202).json({success: true, email: record.email})
     } catch (e) {
+      res.status(500).json({success: false})
+    }
+  }
+  async register_step3 (req: REQ, res: RES) {
+    try {
+      const {name, father, password, birthday, email} = req.body;
+
+      const birthdayDate = new Date(birthday).toISOString().split("T")[0];
+
+      await pool.query(`UPDATE users SET name = ?, fathername = ?, birthday = ?, password = ? WHERE email = ?`,
+        [name, father, birthdayDate, password, email]);
+
+      console.log(email)
+      console.log(name)
+      console.log(father)
+      console.log(password)
+      console.log(birthday)
+
+      res.status(200).json({success: true})
+    } catch (e) {
+      console.error(e)
       res.status(500).json({success: false})
     }
   }
