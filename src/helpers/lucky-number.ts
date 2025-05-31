@@ -1,6 +1,6 @@
 import digit_normaliser from "./digit-normaliser.ts";
 
 
-export default async function calculate_lucky_number (b: number, n: number, fn: number) {
-  return digit_normaliser(b + n + fn)
+export default function calculate_lucky_number (b: number, n: number) {
+  return digit_normaliser(b + n)
 }

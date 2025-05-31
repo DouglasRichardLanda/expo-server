@@ -1,5 +1,8 @@
 import type {Request as REQ, Response as RES} from "express";
 import pool from "../bd-connect.ts";
+import name_number from "../helpers/name-number.ts";
+import date_number from "../helpers/date-number.ts";
+import calculate_lucky_number from "../helpers/lucky-number.ts";
 
 let codes: {code: string, createdAt: number, email: string}[] = [];
 
@@ -49,8 +52,12 @@ class RegistrationController {
 
       const date = new Date(birthday)
 
-      await pool.query(`UPDATE users SET name = ?, fathername = ?, birthday = ?, password = ? WHERE email = ?`,
-        [name, father, date, password, email]);
+      const ubirthdaynumber = date_number(date)
+      const unamenumber = name_number(`${name} ${father}`)
+      const ulnumber = calculate_lucky_number(ubirthdaynumber, unamenumber)
+
+      await pool.query(`UPDATE users SET name = ?, fathername = ?, birthday = ?, password = ?, lnnumber = ?, lbnumber = ?, lnumber = ? WHERE email = ?`,
+        [name, father, date, password, ulnumber, ubirthdaynumber, ulnumber, email]);
 
       res.status(200).json({success: true})
     } catch (e) {
