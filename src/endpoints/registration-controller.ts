@@ -65,6 +65,24 @@ class RegistrationController {
       res.status(500).json({success: false})
     }
   }
+
+  async login (req: REQ, res: RES) {
+    try {
+      const {email, password} = req.query;
+
+      const [row] = await pool.query('select * from users where email = ? and password = ?', [email, password])
+      const user = row[0];
+
+      if (!user) {
+        res.status(200).json({success: true, data: undefined})
+        return
+      }
+
+      res.status(200).json({success: true, data: user})
+    } catch (e) {
+      res.status(500).json({success: false, data: undefined})
+    }
+  }
 }
 
 export default new RegistrationController()
