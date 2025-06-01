@@ -70,7 +70,7 @@ class RegistrationController {
     try {
       const {email, password} = req.query;
 
-      const [row] = await pool.query('select * from users where email = ? and password = ?', [email, password])
+      const [row]: any = await pool.query('select * from users where email = ? and password = ?', [email, password])
       const user = row[0];
 
       if (!user) {
