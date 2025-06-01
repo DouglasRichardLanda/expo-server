@@ -9,24 +9,30 @@ import days_advanced_counter from "../helpers/days-advanced-counter.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
-    const {current, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {current, email} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+
     const today = new Date(current as string)
-    const next14Days = days_advanced_counter(today, 14)
+    const next7Days = days_advanced_counter(today, 7)
+    let report: {full: string, first: string, second: string}[] = []
+
     let fullDayResults: string[] = []
     let firstHalfResults: string[] = []
     let secondHalfResults: string[] = []
-    next14Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1))
-    res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})
+
+    next7Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1, report))
+
+    res.status(200).json({report})
   }
 
   async calendar_report_month(req: REQ, res: RES) {
     const {current, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
     const today = new Date(current as string)
     const next56Days = days_advanced_counter(today, 56)
+    let report: {full: string, first: string, second: string}[] = []
     let fullDayResults: string[] = []
     let firstHalfResults: string[] = []
     let secondHalfResults: string[] = []
-    next56Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1))
+    next56Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1, report))
     res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})
   }
 
