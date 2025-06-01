@@ -6,6 +6,7 @@ import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
 import comperer from "../helpers/matrix-comperer.ts"
 import matrix_distributor from "../helpers/matrix-distributor.ts";
 import days_advanced_counter from "../helpers/days-advanced-counter.ts";
+import pool from "../bd-connect.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
@@ -13,27 +14,30 @@ class CalendarController {
 
     const today = new Date(current as string)
     const next7Days = days_advanced_counter(today, 7)
+
     let report: {full: string, first: string, second: string}[] = []
 
-    let fullDayResults: string[] = []
-    let firstHalfResults: string[] = []
-    let secondHalfResults: string[] = []
+    const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
+    const user = row1[0];
 
-    next7Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1, report))
-
+    next7Days.forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
     res.status(200).json({report})
   }
 
   async calendar_report_month(req: REQ, res: RES) {
-    const {current, id} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {current, email} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+
     const today = new Date(current as string)
-    const next56Days = days_advanced_counter(today, 56)
+
+    const next30Days = days_advanced_counter(today, 30)
     let report: {full: string, first: string, second: string}[] = []
-    let fullDayResults: string[] = []
-    let firstHalfResults: string[] = []
-    let secondHalfResults: string[] = []
-    next56Days.forEach((unit: Date)=> matrix_distributor(unit, fullDayResults, firstHalfResults, secondHalfResults, HUMAN_ENTITY1, report))
-    res.status(200).json({firstHalfResults, secondHalfResults, fullDayResults})
+
+    const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
+    const user = row1[0];
+
+    next30Days.forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+
+    res.status(200).json({report})
   }
 
   async any_date_report(req: REQ, res: RES) {

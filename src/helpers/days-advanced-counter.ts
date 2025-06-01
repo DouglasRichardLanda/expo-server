@@ -1,3 +1,6 @@
+
+
+
 export default function days_advanced_counter(today: Date, amount: number = 1) {
   const days = Array.from({length: amount}, (_, i) => {
     const nextDay = new Date(today);
