@@ -68,7 +68,8 @@ class RegistrationController {
 
   async login (req: REQ, res: RES) {
     try {
-      const {email, password} = req.query;
+      const {email, password} = req.body;
+      console.log("INVOKED LOGIN")
 
       const [row]: any = await pool.query('select * from users where email = ? and password = ?', [email, password])
       const user = row[0];

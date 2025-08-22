@@ -6,11 +6,11 @@ RUSSIAN_LETTER_TABLE.set('в', 4);
 RUSSIAN_LETTER_TABLE.set('г', 7);
 RUSSIAN_LETTER_TABLE.set('д', 4);
 RUSSIAN_LETTER_TABLE.set('е', 5);
-RUSSIAN_LETTER_TABLE.set('ё', 0);  // adjust
+RUSSIAN_LETTER_TABLE.set('ё', 5); // если ё в начале имени то тогда значение 6
 RUSSIAN_LETTER_TABLE.set('ж', 16);
 RUSSIAN_LETTER_TABLE.set('з', 8);
 RUSSIAN_LETTER_TABLE.set('и', 9);
-RUSSIAN_LETTER_TABLE.set('й', 7);
+RUSSIAN_LETTER_TABLE.set('й', 7); //adjust
 RUSSIAN_LETTER_TABLE.set('к', 2);
 RUSSIAN_LETTER_TABLE.set('л', 3);
 RUSSIAN_LETTER_TABLE.set('м', 4);
@@ -31,7 +31,7 @@ RUSSIAN_LETTER_TABLE.set('ъ', 0);
 RUSSIAN_LETTER_TABLE.set('ы', 7);
 RUSSIAN_LETTER_TABLE.set('ь', 0);
 RUSSIAN_LETTER_TABLE.set('э', 5);
-RUSSIAN_LETTER_TABLE.set('ю', 0);  // adjust
-RUSSIAN_LETTER_TABLE.set('я', 0);  // adjust
+RUSSIAN_LETTER_TABLE.set('ю', 3);
+RUSSIAN_LETTER_TABLE.set('я', 1);
 
 export default RUSSIAN_LETTER_TABLE

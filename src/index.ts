@@ -9,6 +9,11 @@ dotenv.config()
 
 const app = express()
 
+const allowedOrigins = [
+  'http://localhost:5403',
+]
+
+
 app.use(cors())
 
 app.use(express.json())

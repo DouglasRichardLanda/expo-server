@@ -47,6 +47,7 @@ class CalendarController {
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row1[0];
 
+
     let fullDayResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnumber)) as number[][], date_number(specificdate))
     let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnnumber)) as number[][], digit_normaliser(specificdate.getDate()))
     let secondHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lbnumber)) as number[][], date_number(specificdate))

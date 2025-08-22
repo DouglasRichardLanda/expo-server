@@ -8,5 +8,7 @@ export default function name_number (name: string) {
 
   const sum = letterblock.reduce((acc, ch) => acc + (RUSSIAN_LETTER_TABLE.get(ch) ?? 0), 0);
 
+  console.log(sum)
+
   return digit_normaliser(sum)
 }

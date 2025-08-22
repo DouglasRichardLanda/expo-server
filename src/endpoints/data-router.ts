@@ -27,6 +27,7 @@ DataRouter.post('/changename', async (req: express.Request, res: express.Respons
     const user = row1[0];
 
     const new_nnumber = name_number(`${name} ${father}`)
+    console.log(new_nnumber)
     const new_lnumber = calculate_lucky_number(user.lbnumber, new_nnumber)
 
     const [row]: any = await pool.query(`update users set name = ?, fathername = ?, lnumber = ?, lnnumber = ? where email = ?`, [name, father, new_lnumber, new_nnumber, email])
