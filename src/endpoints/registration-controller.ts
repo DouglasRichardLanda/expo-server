@@ -94,7 +94,7 @@ class RegistrationController {
 
       res.status(200).json({
         success: true,
-        data: {birthday: user.birthday, name: user.name, fathername: user.fathername, package: user.package, lnumber: user.lnumber, lnnumber: user.lnnumber, lbnumber: user.lbnumber, email: user.email, password: user.password}
+        data: {birthday: user.birthday, name: user.name, fathername: user.fathername, package: user.package, lnumber: user.lnumber, lnnumber: user.lnnumber, lbnumber: user.lbnumber, email: email, password: user.password}
       })
     } catch (e) {
       res.status(500).json({success: false, data: undefined})
