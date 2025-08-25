@@ -4,10 +4,10 @@ import name_number from "../helpers/name-number.ts";
 import date_number from "../helpers/date-number.ts";
 import calculate_lucky_number from "../helpers/lucky-number.ts";
 
-let codes: {code: string, createdAt: number, email: string}[] = [];
+let codes: { code: string, createdAt: number, email: string }[] = [];
 
 class RegistrationController {
-  async register_step1 (req: REQ, res: RES) {
+  async register_step1(req: REQ, res: RES) {
     try {
       const {email} = req.body;
 
@@ -20,19 +20,24 @@ class RegistrationController {
       res.status(500).json({success: false})
     }
   }
-  async register_step2 (req: REQ, res: RES) {
+
+  async register_step2(req: REQ, res: RES) {
     try {
       const {usercode} = req.body;
+      console.log("USER CODE: ", usercode)
 
       const record = codes.find((element) => {
         return element.code === usercode
       })
+      console.log(record)
+
       if (!record) {
         res.status(500).json({success: false})
         return;
       } else {
         try {
-          await pool.query(`insert into users (email, roll) values ('${record.email}', 'user')`);
+          await pool.query(`insert into users (email, roll)
+                            values ('${record.email}', 'user')`);
           codes = codes.filter((element) => {
             return element.code !== record.code;
           })
@@ -46,7 +51,8 @@ class RegistrationController {
       res.status(500).json({success: false})
     }
   }
-  async register_step3 (req: REQ, res: RES) {
+
+  async register_step3(req: REQ, res: RES) {
     try {
       const {name, father, password, birthday, email} = req.body;
 
@@ -56,7 +62,15 @@ class RegistrationController {
       const unamenumber = name_number(`${name} ${father}`)
       const ulnumber = calculate_lucky_number(ubirthdaynumber, unamenumber)
 
-      await pool.query(`UPDATE users SET name = ?, fathername = ?, birthday = ?, password = ?, lnnumber = ?, lbnumber = ?, lnumber = ? WHERE email = ?`,
+      await pool.query(`UPDATE users
+                        SET name       = ?,
+                            fathername = ?,
+                            birthday   = ?,
+                            password   = ?,
+                            lnnumber   = ?,
+                            lbnumber   = ?,
+                            lnumber    = ?
+                        WHERE email = ?`,
         [name, father, date, password, ulnumber, ubirthdaynumber, ulnumber, email]);
 
       res.status(200).json({success: true})
@@ -66,10 +80,9 @@ class RegistrationController {
     }
   }
 
-  async login (req: REQ, res: RES) {
+  async login(req: REQ, res: RES) {
     try {
       const {email, password} = req.body;
-      console.log("INVOKED LOGIN")
 
       const [row]: any = await pool.query('select * from users where email = ? and password = ?', [email, password])
       const user = row[0];
@@ -79,7 +92,10 @@ class RegistrationController {
         return
       }
 
-      res.status(200).json({success: true, data: user})
+      res.status(200).json({
+        success: true,
+        data: {birthday: user.birthday, name: user.name, fathername: user.fathername, package: user.package, lnumber: user.lnumber, lnnumber: user.lnnumber, lbnumber: user.lbnumber, email: user.email, password: user.password}
+      })
     } catch (e) {
       res.status(500).json({success: false, data: undefined})
     }

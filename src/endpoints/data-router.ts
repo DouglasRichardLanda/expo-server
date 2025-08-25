@@ -27,12 +27,14 @@ DataRouter.post('/changename', async (req: express.Request, res: express.Respons
     const user = row1[0];
 
     const new_nnumber = name_number(`${name} ${father}`)
-    console.log(new_nnumber)
     const new_lnumber = calculate_lucky_number(user.lbnumber, new_nnumber)
+
+    console.log(new_nnumber)
+    console.log(new_lnumber)
 
     const [row]: any = await pool.query(`update users set name = ?, fathername = ?, lnumber = ?, lnnumber = ? where email = ?`, [name, father, new_lnumber, new_nnumber, email])
 
-    res.status(200).json({success: true})
+    res.status(200).json({success: true, nlnumber: new_lnumber.toString(), nlnnumber: new_nnumber.toString()})
   } catch (e) {
     res.status(500).json({success: false})
   }
