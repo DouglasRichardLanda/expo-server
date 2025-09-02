@@ -10,7 +10,9 @@ import pool from "../bd-connect.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
-    const {current, email} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {current, email} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+
+
 
     const today = new Date(current as string)
     const next7Days = days_advanced_counter(today, 7)
@@ -21,11 +23,12 @@ class CalendarController {
     const user = row1[0];
 
     next7Days.forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+
     res.status(200).json({report})
   }
 
   async calendar_report_month(req: REQ, res: RES) {
-    const {current, email} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {current, email} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
 
     const today = new Date(current as string)
 
@@ -41,7 +44,8 @@ class CalendarController {
   }
 
   async any_date_report(req: REQ, res: RES) {
-    const {email, date} = req.query; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+    const {email, date} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+
     const specificdate = new Date(date as string)
 
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])

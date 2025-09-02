@@ -73,9 +73,55 @@ class RegistrationController {
                         WHERE email = ?`,
         [name, father, date, password, ulnumber, ubirthdaynumber, ulnumber, email]);
 
-      res.status(200).json({success: true})
+      res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
     } catch (e) {
       console.error(e)
+      res.status(500).json({success: false})
+    }
+  }
+
+  async register_step4(req: REQ, res: RES) {
+    try {
+      const {email, pack} = req.body;
+
+      let name: string;
+      let start: string;
+      let end: string;
+
+      const today = new Date();
+      start = today.toISOString().slice(0, 10); // YYYY-MM-DD
+
+      if (pack === "Базовый") {
+        name = "basic"
+        const future = new Date(today);
+        future.setDate(future.getDate() + 14); // 2 weeks
+        end = future.toISOString().slice(0, 10);
+      } else if (pack === "Стандартный") {
+        name = "standard"
+        const future = new Date(today);
+        future.setMonth(future.getMonth() + 1); // 1 month
+        end = future.toISOString().slice(0, 10);
+      } else if (pack === "Премиум") {
+        name = "premium"
+        const future = new Date(today);
+        future.setMonth(future.getMonth() + 3); // 3 months
+        end = future.toISOString().slice(0, 10);
+      } else {
+        console.log("unexpected package")
+        throw new Error("Something went wrong with the package")
+      }
+
+      if (!name || !start || !end) throw new Error("no package was chosen")
+
+      await pool.query(`UPDATE users
+                        SET package    = ?,
+                            subscriptiondate   = ?,
+                            subscriptionexpiresdate    = ?
+                        WHERE email = ?`,
+        [name, start, end, email]);
+
+      res.status(202).json({success: true, start: start, end: end, pack: name})
+    } catch (e) {
       res.status(500).json({success: false})
     }
   }
