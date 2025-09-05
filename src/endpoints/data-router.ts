@@ -3,6 +3,7 @@ import pool from "../bd-connect.ts";
 import date_number from "../helpers/date-number.ts";
 import name_number from "../helpers/name-number.ts";
 import calculate_lucky_number from "../helpers/lucky-number.ts";
+import nameValueContext from "../advanced-name-fn-check.ts";
 
 
 const DataRouter: express.Router = express.Router()
@@ -29,7 +30,7 @@ DataRouter.post('/changename', async (req: express.Request, res: express.Respons
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row1[0];
 
-    const new_nnumber = name_number(`${name} ${father}`)
+    const new_nnumber = nameValueContext(`${name} ${father}`)
     const new_lnumber = calculate_lucky_number(user.lbnumber, new_nnumber)
 
     console.log(new_nnumber)

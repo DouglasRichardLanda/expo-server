@@ -57,7 +57,7 @@ function isConsonant(c: string): boolean {
   return !vowels.includes(c);
 }
 
-// export default nameValueContext;
+export default nameValueContext;
 
 
 // console.log(nameValueContext("Васильева Марина Федор")); // 1

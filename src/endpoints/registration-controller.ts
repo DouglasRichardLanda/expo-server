@@ -4,6 +4,7 @@ import name_number from "../helpers/name-number.ts";
 import date_number from "../helpers/date-number.ts";
 import calculate_lucky_number from "../helpers/lucky-number.ts";
 import {PackagePlanEnum} from "../package-enum.ts";
+import nameValueContext from "../advanced-name-fn-check.ts";
 
 let codes: { code: string, createdAt: number, email: string }[] = [];
 
@@ -60,7 +61,7 @@ class RegistrationController {
       const date = new Date(birthday)
 
       const ubirthdaynumber = date_number(date)
-      const unamenumber = name_number(`${name} ${father}`)
+      const unamenumber = nameValueContext(`${name} ${father}`)
       const ulnumber = calculate_lucky_number(ubirthdaynumber, unamenumber)
 
       await pool.query(`UPDATE users
