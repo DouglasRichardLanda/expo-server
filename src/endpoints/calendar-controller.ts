@@ -2,7 +2,6 @@ import digit_normaliser from "../helpers/digit-normaliser";
 import date_number from "../helpers/date-number.ts";
 import type {Request as REQ, Response as RES} from "express";
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
-import {HUMAN_ENTITY1} from "../local-db/users-dto.ts";
 import comperer from "../helpers/matrix-comperer.ts"
 import matrix_distributor from "../helpers/matrix-distributor.ts";
 import days_advanced_counter from "../helpers/days-advanced-counter.ts";
@@ -11,8 +10,6 @@ import pool from "../bd-connect.ts";
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
     const {current, email} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
-
-
 
     const today = new Date(current as string)
     const next7Days = days_advanced_counter(today, 7)
@@ -40,6 +37,8 @@ class CalendarController {
 
     next30Days.forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
 
+    console.log(report)
+
     res.status(200).json({report})
   }
 
@@ -51,6 +50,7 @@ class CalendarController {
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row1[0];
 
+    console.log(user)
 
     let fullDayResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnumber)) as number[][], date_number(specificdate))
     let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnnumber)) as number[][], digit_normaliser(specificdate.getDate()))
