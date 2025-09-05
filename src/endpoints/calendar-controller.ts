@@ -6,6 +6,7 @@ import comperer from "../helpers/matrix-comperer.ts"
 import matrix_distributor from "../helpers/matrix-distributor.ts";
 import days_advanced_counter from "../helpers/days-advanced-counter.ts";
 import pool from "../bd-connect.ts";
+import {PackagePlanEnum} from "../package-enum.ts";
 
 class CalendarController {
   async calendar_report_week(req: REQ, res: RES) {
@@ -42,6 +43,26 @@ class CalendarController {
     res.status(200).json({report})
   }
 
+  async report(req: REQ, res: RES) {
+    const {current, email} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
+
+    const today = new Date(current as string)
+
+    const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
+    const user = row1[0];
+
+    let report: {full: string, first: string, second: string}[] = []
+
+    if (user.package === PackagePlanEnum.basic) {
+      days_advanced_counter(today, 7).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+    } else if (user.package === PackagePlanEnum.standard) {
+      days_advanced_counter(today, 30).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+    } else { // PackagePlanEnum.premium
+      days_advanced_counter(today, 60).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+    }
+
+    res.status(200).json({report})
+  }
   async any_date_report(req: REQ, res: RES) {
     const {email, date} = req.body; // current is the date, we receive it from user because users may have different time zones. ID for future DB
 
@@ -50,13 +71,15 @@ class CalendarController {
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row1[0];
 
-    console.log(user)
+    if (user.package === PackagePlanEnum.premium) {
+      let fullDayResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnumber)) as number[][], date_number(specificdate))
+      let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnnumber)) as number[][], digit_normaliser(specificdate.getDate()))
+      let secondHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lbnumber)) as number[][], date_number(specificdate))
 
-    let fullDayResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnumber)) as number[][], date_number(specificdate))
-    let firstHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnnumber)) as number[][], digit_normaliser(specificdate.getDate()))
-    let secondHalfResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lbnumber)) as number[][], date_number(specificdate))
-
-    res.status(200).json({firstHalfResult, secondHalfResult, fullDayResult})
+      res.status(200).json({firstHalfResult, secondHalfResult, fullDayResult})
+    } else {
+      res.status(200).json({forbidden: true})
+    }
   }
 }
 
