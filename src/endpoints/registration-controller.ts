@@ -3,6 +3,7 @@ import pool from "../bd-connect.ts";
 import name_number from "../helpers/name-number.ts";
 import date_number from "../helpers/date-number.ts";
 import calculate_lucky_number from "../helpers/lucky-number.ts";
+import {PackagePlanEnum} from "../package-enum.ts";
 
 let codes: { code: string, createdAt: number, email: string }[] = [];
 
@@ -92,17 +93,17 @@ class RegistrationController {
       start = today.toISOString().slice(0, 10); // YYYY-MM-DD
 
       if (pack === "Базовый") {
-        name = "basic"
+        name = PackagePlanEnum.basic
         const future = new Date(today);
         future.setDate(future.getDate() + 14); // 2 weeks
         end = future.toISOString().slice(0, 10);
       } else if (pack === "Стандартный") {
-        name = "standard"
+        name = PackagePlanEnum.standard
         const future = new Date(today);
         future.setMonth(future.getMonth() + 1); // 1 month
         end = future.toISOString().slice(0, 10);
       } else if (pack === "Премиум") {
-        name = "premium"
+        name = PackagePlanEnum.premium
         const future = new Date(today);
         future.setMonth(future.getMonth() + 3); // 3 months
         end = future.toISOString().slice(0, 10);
