@@ -57,11 +57,15 @@ function isConsonant(c: string): boolean {
   return !vowels.includes(c);
 }
 
-export default nameValueContext;
-
-
 // console.log(nameValueContext("Васильева Марина Федор")); // 1
 // console.log(nameValueContext("Аркадий Николай Чернобородов")); // 3
 // console.log(nameValueContext("Дмитрий Андрей Петров")); // 8
 // console.log(nameValueContext("Арина Валерий Тарабукина")); // 7
-// console.log(nameValueContext("Шапка Станислав Сергей")); // 11 ?
+// console.log(nameValueContext("Шапка Станислав Сергей")); // 2
+// console.log(nameValueContext("Евгений Виталий Фурман")); // 3
+// console.log(nameValueContext("Ахмад Шах Забиула Сури")); // 6
+// console.log(nameValueContext("Ксения Виктор Титова")); // 9
+// console.log(nameValueContext("Векослав Иван Полдругач")); // 8
+
+export default nameValueContext;
+
