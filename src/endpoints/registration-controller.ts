@@ -13,8 +13,17 @@ class RegistrationController {
     try {
       const {email} = req.body;
 
+      const [existing] = await pool.query(`SELECT id FROM users WHERE email = ?`, [email]);
+      // @ts-ignore
+      if (existing.length > 0) {
+        res.status(202).json({success: false, message: "Email already registered"});
+        return
+      }
+
+
       const code = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
       codes.push({code: code, createdAt: Date.now(), email: email})
+
       // console.log("SAVED :: ", {code: code, createdAt: Date.now(), email: email});
       console.log(codes)
       res.status(202).json({success: true})
@@ -98,8 +107,8 @@ class RegistrationController {
                             lbnumber   = ?,
                             lnumber    = ?,
                             package    = "TRIAL",
-                            subscriptiondate   = ?,
-                            subscriptionexpiresdate    = ?
+                            subscription_start   = ?,
+                            subscription_expires    = ?
                         WHERE email = ?`,
         [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, email]);
 
