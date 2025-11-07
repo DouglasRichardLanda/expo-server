@@ -66,6 +66,7 @@ function isConsonant(c: string): boolean {
 // console.log(nameValueContext("Ахмад Шах Забиула Сури")); // 6
 // console.log(nameValueContext("Ксения Виктор Титова")); // 9
 // console.log(nameValueContext("Векослав Иван Полдругач")); // 8
+// console.log(nameValueContext("Станислав Шапка Сергей")) // -> 11 ?????????
 
 export default nameValueContext;
 

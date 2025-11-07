@@ -57,8 +57,10 @@ class CalendarController {
       days_advanced_counter(today, 7).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
     } else if (user.package === PackagePlanEnum.standard) {
       days_advanced_counter(today, 30).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
-    } else { // PackagePlanEnum.premium
+    } else if (user.package === PackagePlanEnum.premium) {
       days_advanced_counter(today, 60).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+    } else {
+      days_advanced_counter(today, 7).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
     }
 
     res.status(200).json({report})

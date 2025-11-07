@@ -23,6 +23,20 @@ class RegistrationController {
     }
   }
 
+  async register_step1_again(req: REQ, res: RES) {
+    try {
+      const {email} = req.body;
+
+      const code = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+      codes.push({code: code, createdAt: Date.now(), email: email})
+      // console.log("SAVED :: ", {code: code, createdAt: Date.now(), email: email});
+      console.log(codes)
+      res.status(202).json({success: true})
+    } catch (e) {
+      res.status(500).json({success: false})
+    }
+  }
+
   async register_step2(req: REQ, res: RES) {
     try {
       const {usercode} = req.body;
@@ -60,6 +74,16 @@ class RegistrationController {
 
       const date = new Date(birthday)
 
+      let start: string;
+      let end: string;
+
+      const today = new Date();
+      start = today.toISOString().slice(0, 10); // YYYY-MM-DD
+
+      const future = new Date(today);
+      future.setDate(future.getDate() + 7); // 1 week
+      end = future.toISOString().slice(0, 10);
+
       const ubirthdaynumber = date_number(date)
       const unamenumber = nameValueContext(`${name} ${father}`)
       const ulnumber = calculate_lucky_number(ubirthdaynumber, unamenumber)
@@ -71,9 +95,12 @@ class RegistrationController {
                             password   = ?,
                             lnnumber   = ?,
                             lbnumber   = ?,
-                            lnumber    = ?
+                            lnumber    = ?,
+                            package    = "TRIAL",
+                            subscriptiondate   = ?,
+                            subscriptionexpiresdate    = ?
                         WHERE email = ?`,
-        [name, father, date, password, ulnumber, ubirthdaynumber, ulnumber, email]);
+        [name, father, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, email]);
 
       res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
     } catch (e) {

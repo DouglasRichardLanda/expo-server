@@ -1,6 +1,5 @@
 import comperer from "./matrix-comperer"
 import COMPARISON_MATRIX from "../tables/comparison-matrix.ts";
-import type {HUMAN_ENTITY_INTERFACE} from "../local-db/users-dto.ts";
 import date_number from "./date-number.ts";
 import digit_normaliser from "./digit-normaliser.ts";
 
