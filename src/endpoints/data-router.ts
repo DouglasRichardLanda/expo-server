@@ -12,9 +12,6 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
   try {
     const {email} = req.body;
 
-    console.log(email)
-    console.log("From data user")
-
     const [row]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row[0];
 

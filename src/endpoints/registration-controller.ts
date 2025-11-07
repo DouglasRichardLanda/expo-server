@@ -49,12 +49,10 @@ class RegistrationController {
   async register_step2(req: REQ, res: RES) {
     try {
       const {usercode} = req.body;
-      console.log("USER CODE: ", usercode)
 
       const record = codes.find((element) => {
         return element.code === usercode
       })
-      console.log(record)
 
       if (!record) {
         res.status(500).json({success: false})
