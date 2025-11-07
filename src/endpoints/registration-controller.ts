@@ -52,8 +52,8 @@ class RegistrationController {
         return;
       } else {
         try {
-          await pool.query(`insert into users (email, roll)
-                            values ('${record.email}', 'user')`);
+          await pool.query(`insert into users (email)
+                            values ('${record.email}')`);
           codes = codes.filter((element) => {
             return element.code !== record.code;
           })
@@ -70,7 +70,7 @@ class RegistrationController {
 
   async register_step3(req: REQ, res: RES) {
     try {
-      const {name, father, password, birthday, email} = req.body;
+      const {firstname, secondname, fathername, password, birthday, email} = req.body;
 
       const date = new Date(birthday)
 
@@ -85,11 +85,12 @@ class RegistrationController {
       end = future.toISOString().slice(0, 10);
 
       const ubirthdaynumber = date_number(date)
-      const unamenumber = nameValueContext(`${name} ${father}`)
+      const unamenumber = nameValueContext(`${firstname} ${secondname} ${fathername}`)
       const ulnumber = calculate_lucky_number(ubirthdaynumber, unamenumber)
 
       await pool.query(`UPDATE users
-                        SET name       = ?,
+                        SET firstname  = ?,
+                            secondname = ?,
                             fathername = ?,
                             birthday   = ?,
                             password   = ?,
@@ -100,15 +101,17 @@ class RegistrationController {
                             subscriptiondate   = ?,
                             subscriptionexpiresdate    = ?
                         WHERE email = ?`,
-        [name, father, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, email]);
+        [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, email]);
 
-      res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
+      // res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
+      res.status(200).json({success: true})
     } catch (e) {
       console.error(e)
       res.status(500).json({success: false})
     }
   }
 
+  // ???????????????????????????????????????????????????????????
   async register_step4(req: REQ, res: RES) {
     try {
       const {email, pack} = req.body;
