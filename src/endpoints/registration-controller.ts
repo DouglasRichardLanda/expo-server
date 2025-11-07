@@ -83,15 +83,12 @@ class RegistrationController {
 
       const date = new Date(birthday)
 
-      let start: string;
-      let end: string;
-
       const today = new Date();
-      start = today.toISOString().slice(0, 10); // YYYY-MM-DD
+      const start = today.getTime(); // timestamp
 
       const future = new Date(today);
-      future.setDate(future.getDate() + 7); // 1 week
-      end = future.toISOString().slice(0, 10);
+      future.setDate(future.getDate() + 7);
+      const end = future.getTime(); // timestamp
 
       const ubirthdaynumber = date_number(date)
       const unamenumber = nameValueContext(`${firstname} ${secondname} ${fathername}`)
@@ -175,13 +172,25 @@ class RegistrationController {
       const user = row[0];
 
       if (!user) {
-        res.status(200).json({success: true, data: undefined})
+        res.status(200).json({success: false, data: undefined})
         return
       }
 
       res.status(200).json({
         success: true,
-        data: {birthday: user.birthday, name: user.name, fathername: user.fathername, package: user.package, lnumber: user.lnumber, lnnumber: user.lnnumber, lbnumber: user.lbnumber, email: email, password: user.password}
+        data: {
+          birthday: user.birthday,
+          firstname: user.firstname,
+          secondname: user.secondname,
+          fathername: user.fathername,
+          package: user.package,
+          lnumber: user.lnumber,
+          lnnumber: user.lnnumber,
+          lbnumber: user.lbnumber,
+          email: email,
+          subscription_start: user.subscription_start,
+          subscription_expires: user.subscription_expires
+        }
       })
     } catch (e) {
       res.status(500).json({success: false, data: undefined})
