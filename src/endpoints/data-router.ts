@@ -15,7 +15,22 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
     const [row]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row[0];
 
-    res.status(200).json({success: true, data: user});
+    res.status(200).json({
+      success: true,
+      data: {
+        birthday: user.birthday,
+        firstname: user.firstname,
+        secondname: user.secondname,
+        fathername: user.fathername,
+        package: user.package,
+        lnumber: user.lnumber,
+        lnnumber: user.lnnumber,
+        lbnumber: user.lbnumber,
+        email: email,
+        subscription_start: user.subscription_start,
+        subscription_expires: user.subscription_expires
+      }
+    })
   } catch (e) {
     res.status(500).json({success: false})
   }
@@ -38,6 +53,16 @@ DataRouter.post('/changename', async (req: express.Request, res: express.Respons
     res.status(200).json({success: true, nlnumber: new_lnumber.toString(), nlnnumber: new_nnumber.toString()})
   } catch (e) {
     res.status(500).json({success: false})
+  }
+})
+DataRouter.post('/delete/account', async (req: express.Request, res: express.Response) => {
+  const {email} = req.body;
+  try {
+    const [result]: any = await pool.query(`DELETE FROM users WHERE email = ?`, [email]);
+
+    res.status(200).json({success: true})
+  } catch (e) {
+    res.status(200).json({success: false})
   }
 })
 

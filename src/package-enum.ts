@@ -1,8 +1,8 @@
 enum PackagePlanEnum {
-  premium = "premium",
-  standard = "standard",
-  basic = "basic",
-  trial = "trial"
+  premium = "PREMIUM",
+  standard = "STANDARD",
+  basic = "BASIC",
+  trial = "TRIAL"
 }
 
 export {PackagePlanEnum}
