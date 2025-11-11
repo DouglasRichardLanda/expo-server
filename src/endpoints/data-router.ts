@@ -28,7 +28,9 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
         lbnumber: user.lbnumber,
         email: email,
         subscription_start: user.subscription_start,
-        subscription_expires: user.subscription_expires
+        subscription_expires: user.subscription_expires,
+        language: user.language,
+        telephone: user.telephone
       }
     })
   } catch (e) {
