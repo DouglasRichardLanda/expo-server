@@ -61,7 +61,10 @@ DataRouter.post('/changename', async (req: express.Request, res: express.Respons
 DataRouter.post('/delete/account', async (req: express.Request, res: express.Response) => {
   const {email} = req.body;
   try {
-    const [result]: any = await pool.query(`DELETE FROM users WHERE email = ?`, [email]);
+    const [result]: any = await pool.query(
+      `UPDATE users SET active_account = 0 WHERE email = ?`,
+      [email]
+    );
 
     res.status(200).json({success: true})
   } catch (e) {

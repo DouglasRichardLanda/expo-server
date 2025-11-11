@@ -80,6 +80,23 @@ class RegistrationController {
       const {firstname, secondname, fathername, password, birthday, email, telephone, language} = req.body;
 
       const date = new Date(birthday)
+      const formattedBirthday = date.toISOString().split('T')[0]; // "YYYY-MM-DD"
+
+      const [existing_person] = await pool.query(`SELECT id FROM users WHERE firstname = ? AND secondname = ? AND fathername = ? AND birthday = ?`, [firstname, secondname, fathername, formattedBirthday]);
+      // @ts-ignore
+      if (existing_person.length > 0) {
+        console.log("Данный пользователь уже был зарегистрирован")
+        res.status(200).json({success: false, message: "Данный пользователь уже был зарегистрирован"})
+        return
+      }
+
+      const [existing_telephone] = await pool.query(`SELECT id FROM users WHERE telephone = ?`, [telephone]);
+      // @ts-ignore
+      if (existing_telephone.length > 0) {
+        console.log("Данный телефон уже используется")
+        res.status(200).json({success: false, message: "Данный телефон уже используется"})
+        return
+      }
 
       const today = new Date();
       const start = today.getTime(); // timestamp
@@ -190,7 +207,10 @@ class RegistrationController {
           lbnumber: user.lbnumber,
           email: email,
           subscription_start: user.subscription_start,
-          subscription_expires: user.subscription_expires
+          subscription_expires: user.subscription_expires,
+          language: user.language,
+          telephone: user.telephone,
+          active_account: user.active_account
         }
       })
     } catch (e) {
