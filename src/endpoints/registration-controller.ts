@@ -77,7 +77,7 @@ class RegistrationController {
 
   async register_step3(req: REQ, res: RES) {
     try {
-      const {firstname, secondname, fathername, password, birthday, email} = req.body;
+      const {firstname, secondname, fathername, password, birthday, email, telephone} = req.body;
 
       const date = new Date(birthday)
 
@@ -103,9 +103,10 @@ class RegistrationController {
                             lnumber    = ?,
                             package    = "TRIAL",
                             subscription_start   = ?,
-                            subscription_expires    = ?
+                            subscription_expires    = ?,
+                            telephone = ?,
                         WHERE email = ?`,
-        [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, email]);
+        [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, telephone, email]);
 
       // res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
       res.status(200).json({success: true})
