@@ -77,7 +77,7 @@ class RegistrationController {
 
   async register_step3(req: REQ, res: RES) {
     try {
-      const {firstname, secondname, fathername, password, birthday, email, telephone} = req.body;
+      const {firstname, secondname, fathername, password, birthday, email, telephone, language} = req.body;
 
       const date = new Date(birthday)
 
@@ -105,8 +105,10 @@ class RegistrationController {
                             subscription_start   = ?,
                             subscription_expires    = ?,
                             telephone = ?,
+                            language = ?,
+                            active_account = true
                         WHERE email = ?`,
-        [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, telephone, email]);
+        [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, telephone, language, email]);
 
       // res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
       res.status(200).json({success: true})

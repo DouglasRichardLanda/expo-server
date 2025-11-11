@@ -30,7 +30,8 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
         subscription_start: user.subscription_start,
         subscription_expires: user.subscription_expires,
         language: user.language,
-        telephone: user.telephone
+        telephone: user.telephone,
+        active_account: user.active_account
       }
     })
   } catch (e) {
