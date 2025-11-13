@@ -53,6 +53,12 @@ class CalendarController {
 
     let report: {full: string, first: string, second: string}[] = []
 
+    if (user.subscription_expires < today.getTime()) {
+      days_advanced_counter(today, 0).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
+      res.status(200).json({report})
+      return
+    }
+
     if (user.package === PackagePlanEnum.basic) {
       days_advanced_counter(today, 7).forEach((unit: Date)=> matrix_distributor(unit, {luckynumber: user.lnumber, namenumber: user.lnnumber, birthdaynumber: user.lbnumber}, report))
     } else if (user.package === PackagePlanEnum.standard) {
@@ -72,6 +78,11 @@ class CalendarController {
 
     const [row1]: any = await pool.query(`select * from users where email = ?`, [email])
     const user = row1[0];
+
+    if (user.subscription_expires < new Date().getTime()) {
+      res.status(200).json({expired: true})
+      return
+    }
 
     if (user.package === PackagePlanEnum.premium) {
       let fullDayResult: string = comperer(COMPARISON_MATRIX.get(Number(user.lnumber)) as number[][], date_number(specificdate))

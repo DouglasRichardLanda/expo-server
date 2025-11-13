@@ -12,7 +12,29 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
   try {
     const {email} = req.body;
 
-    const [row]: any = await pool.query(`select * from users where email = ?`, [email])
+    const [row]: any = await pool.query(`
+        SELECT
+            id,
+            firstname,
+            secondname,
+            fathername,
+            DATE_FORMAT(birthday, '%Y-%m-%d') AS birthday,
+            subscription_start,
+            subscription_expires,
+            package,
+            email,
+            telephone,
+            language,
+            password,
+            lbnumber,
+            lnnumber,
+            address,
+            agreement_confirm,
+            lnumber,
+            active_account,
+            lastmodifieddate
+        FROM users
+        WHERE email = ?`, [email]);
     const user = row[0];
 
     res.status(200).json({
@@ -31,7 +53,8 @@ DataRouter.post('/userdata', async (req: express.Request, res: express.Response)
         subscription_expires: user.subscription_expires,
         language: user.language,
         telephone: user.telephone,
-        active_account: user.active_account
+        active_account: user.active_account,
+        address: user.address
       }
     })
   } catch (e) {

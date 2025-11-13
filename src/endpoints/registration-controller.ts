@@ -129,7 +129,6 @@ class RegistrationController {
                         WHERE email = ?`,
         [firstname, secondname, fathername, date, password, unamenumber, ubirthdaynumber, ulnumber, start, end, telephone, language, address, email]);
 
-      // res.status(200).json({success: true, lnumber: ulnumber, lnnumber: unamenumber, lbnumber: ubirthdaynumber})
       res.status(200).json({success: true})
     } catch (e) {
       console.error(e)
@@ -217,7 +216,8 @@ class RegistrationController {
           subscription_expires: user.subscription_expires,
           language: user.language,
           telephone: user.telephone,
-          active_account: user.active_account
+          active_account: user.active_account,
+          address: user.address
         }
       })
     } catch (e) {
