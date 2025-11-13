@@ -194,6 +194,11 @@ class RegistrationController {
         return
       }
 
+      if(user.active_account === 0) {
+        res.status(200).json({success: false, data: undefined})
+        return
+      }
+
       res.status(200).json({
         success: true,
         data: {
